@@ -70,7 +70,6 @@ def Poisson_1D(N, plotSol):
 		plt.ylim(1.2*np.min(diff), 1.2*np.max(diff))
 		plt.scatter(x, diff, color='r')
 		plt.grid()
-		plt.show()
 
 	else:
 		None	
