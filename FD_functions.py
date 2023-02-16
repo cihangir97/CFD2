@@ -73,5 +73,5 @@ def Poisson_1D(N, plotSol):
 
 	else:
 		None	
-	return phii, phix(x), diff, eps
+	return phii, phix(x), diff, eps, h
 
