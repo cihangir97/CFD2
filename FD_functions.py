@@ -13,7 +13,7 @@ def phix(x):
 	y = (-4/(9*(np.pi)**2))*np.sin((3*np.pi*x)/2)
 	return y
 
-def Poisson_1D(N, plotSol):
+def Poisson_1D(N,plotSol):
 	"""
 	Solves the 1d poisson equation
 	with Dirichlet boundary condtion at x=0 of phi=0
@@ -74,4 +74,63 @@ def Poisson_1D(N, plotSol):
 	else:
 		None	
 	return phii, phix(x), diff, eps, h
+
+def Poisson_1D_dirichlet(N,a,b,plotSol):
+	"""
+	Solves the 1d poisson equation
+	with Dirichlet boundary condtion at x=0 of phi=0
+	and Neumann boundary condtion at x=l
+	where the first derivative wrt x equals 0 at this point
+	
+	Args
+		N [int]: Amount of vertices
+		plotSol [bool]: if True plots the solution
+		a [float]: dirichlet condition at x=0
+		b [float]: dirichlet condition at x=1
+	Return
+		phii [1d array]: Approximate solution
+		phix(x) [1d array]: exact solution
+		diff [1d array]: Difference between exact and approx. sol. 
+		eps [float]: L2 error
+	"""
+
+	## Constants
+	h	= 1.0/N	# Distance between points (constant)
+	x 	= np.linspace(0,1,N+1)
+
+	## Create linear system
+	# Tri diagonal matirx [-1 2 -1]
+	A =	(
+			np.diag(np.full(N+1,-2)) + 
+			np.diag(1*np.ones((N)),-1) + 
+			np.diag(1*np.ones((N)),1)   
+		)
+	# Implement dirichlet into Matrix
+	A[0, 0] = 1*(h**2)
+
+	A[0, 1] = 0
+	A[N, N] = 1*(h**2)
+ 
+	A[N, N-1] = 0
+	# Divide everything by h squared
+	A = A / (h**2)
+	# right-hand side
+	fi = fx(x)
+	fi[0] = a
+	fi[N] = b
+	## Solve the system
+	phii = np.linalg.solve(A,fi)
+
+	print fi
+	if plotSol==True:
+		plt.figure()
+		plt.title('Approx olution with Diriclet bc., N=%i'%N)
+		plt.grid()
+		plt.scatter(x, phii, color='r', label='2nd Order FD')			# approx 
+		plt.legend()
+
+
+	else:
+		None	
+	return phii, h
 
