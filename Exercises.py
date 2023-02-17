@@ -32,7 +32,7 @@ print '0r the other way around.'
 ## Question 4
 
 
-Ns = 2**(np.arange(14)[4:])	# array with our Nvalues from 2**4 till specified
+Ns = 2**(np.arange(12)[4:])	# array with our Nvalues from 2**4 till specified
 
 eps_hs	= [Poisson_1D(i,False)[3:] for i in Ns] # get all the L2 and h for different Ns
 eps	= zip(*eps_hs)[0]			# all the L2 errors
@@ -53,5 +53,8 @@ plt.ylabel('log(L2-error)')
 plt.plot(hs_log, eps_log)
 plt.gca().invert_xaxis()
 plt.grid()
+
+## Question 5
+dir_sol, h  = Poisson_1D_dirichlet(10,1,5, True)
 
 plt.show()
